@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1125CE6B2FD1C06C00994F6A /* Lending.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1125CE6A2FD1C06C00994F6A /* Lending.swift */; };
+		1125CE6F2FD1C09500994F6A /* LendingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1125CE6C2FD1C09500994F6A /* LendingView.swift */; };
 		A001 /* FinanceLensApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F001 /* FinanceLensApp.swift */; };
 		A002 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = F002 /* AppState.swift */; };
 		A003 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F003 /* AppCoordinator.swift */; };
@@ -53,6 +55,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1125CE6A2FD1C06C00994F6A /* Lending.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lending.swift; sourceTree = "<group>"; };
+		1125CE6C2FD1C09500994F6A /* LendingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LendingView.swift; sourceTree = "<group>"; };
 		F001 /* FinanceLensApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinanceLensApp.swift; sourceTree = "<group>"; };
 		F002 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		F003 /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
@@ -111,6 +115,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1125CE6D2FD1C09500994F6A /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				1125CE6C2FD1C09500994F6A /* LendingView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		1125CE6E2FD1C09500994F6A /* Lending */ = {
+			isa = PBXGroup;
+			children = (
+				1125CE6D2FD1C09500994F6A /* Views */,
+			);
+			path = Lending;
+			sourceTree = "<group>";
+		};
 		G000 = {
 			isa = PBXGroup;
 			children = (
@@ -182,6 +202,7 @@
 		G031 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				1125CE6A2FD1C06C00994F6A /* Lending.swift */,
 				F008 /* Budget.swift */,
 				F009 /* Category.swift */,
 				F010 /* ChatModels.swift */,
@@ -304,6 +325,7 @@
 		G050 /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				1125CE6E2FD1C09500994F6A /* Lending */,
 				G051 /* Analytics/Views */,
 				G052 /* Authentication/Views */,
 				G053 /* Budget */,
@@ -454,7 +476,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1600;
-				LastUpgradeCheck = 1600;
+				LastUpgradeCheck = 2650;
 			};
 			buildConfigurationList = CL01 /* Build configuration list for PBXProject "FinanceLens" */;
 			compatibilityVersion = "Xcode 14.0";
@@ -492,6 +514,7 @@
 			files = (
 				A001 /* FinanceLensApp.swift in Sources */,
 				A002 /* AppState.swift in Sources */,
+				1125CE6B2FD1C06C00994F6A /* Lending.swift in Sources */,
 				A003 /* AppCoordinator.swift in Sources */,
 				A004 /* MainTabView.swift in Sources */,
 				A005 /* BiometricAuthManager.swift in Sources */,
@@ -501,6 +524,7 @@
 				A009 /* Category.swift in Sources */,
 				A010 /* ChatModels.swift in Sources */,
 				A011 /* Forecast.swift in Sources */,
+				1125CE6F2FD1C09500994F6A /* LendingView.swift in Sources */,
 				A012 /* Merchant.swift in Sources */,
 				A013 /* Subscription.swift in Sources */,
 				A014 /* Transaction.swift in Sources */,
@@ -544,21 +568,49 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = ZG2DYJRZ39;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -571,15 +623,43 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = ZG2DYJRZ39;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
@@ -593,7 +673,6 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = ZG2DYJRZ39;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSFaceIDUsageDescription = "Unlock FinanceLens with Face ID";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -620,7 +699,6 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = ZG2DYJRZ39;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSFaceIDUsageDescription = "Unlock FinanceLens with Face ID";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;

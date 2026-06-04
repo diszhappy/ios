@@ -17,7 +17,8 @@ struct FinanceLensApp: App {
                 ChatSession.self,
                 ChatMessage.self,
                 Forecast.self,
-                AppSettings.self
+                AppSettings.self,
+                Lending.self
             ])
             let config = ModelConfiguration(
                 schema: schema,
@@ -38,3 +39,4 @@ struct FinanceLensApp: App {
         }
     }
 }
+

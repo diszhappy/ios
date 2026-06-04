@@ -21,6 +21,7 @@ struct SettingsView: View {
                 Section("Data") {
                     NavigationLink("Import Statement") { ImportStatementView() }
                     NavigationLink("SMS Transactions") { SMSMonitorView() }
+                    NavigationLink("Lendings & Loans") { LendingListView() }
                     NavigationLink("Budgets") { BudgetView() }
                 }
 
@@ -42,7 +43,7 @@ struct SettingsView: View {
                 SecureField("4-digit PIN", text: $newPin)
                     .keyboardType(.numberPad)
                 Button("Save") {
-                    if newPin.count >= 4 { PINManager.setPin(newPin) }
+                    if newPin.count >= 4 { _ = PINManager.setPin(newPin) }
                     newPin = ""
                 }
                 Button("Cancel", role: .cancel) { newPin = "" }
