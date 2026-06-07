@@ -1,5 +1,6 @@
 import SwiftUI
 import Charts
+import WidgetKit
 
 struct DashboardView: View {
     @Environment(\.modelContext) private var context
@@ -45,7 +46,8 @@ struct DashboardView: View {
             }
             .sheet(isPresented: $showImport) { ImportStatementView() }
             .sheet(isPresented: $showAddTransaction) { AddTransactionView(viewModel: transactionVM) }
-            .onAppear { transactionVM.setup(context: context); loadDashboard() }
+            .onAppear { transactionVM.setup(context: context) }
+            .task { await loadDashboard() }
         }
     }
 
@@ -202,7 +204,7 @@ struct DashboardView: View {
         }
     }
 
-    private func loadDashboard() {
+    private func loadDashboard() async {
         let repo = TransactionRepository(context: context)
         let budgetRepo = BudgetRepository(context: context)
         let period = DateRange.thisMonth
@@ -212,10 +214,30 @@ struct DashboardView: View {
             totalIncome = try repo.totalIncome(from: period.start, to: period.end)
             let byCategory = try repo.spendingByCategory(from: period.start, to: period.end)
             topCategories = byCategory.sorted { $0.value > $1.value }.map { ($0.key, $0.value) }
-            recentTransactions = try repo.fetchAll().prefix(5).map { $0 }
+            recentTransactions = Array(try repo.fetchAll(from: period.start, to: period.end).prefix(5))
 
-            let healthEngine = FinancialHealthEngine(repository: repo, budgetRepository: budgetRepo)
-            healthScore = try healthEngine.calculateScore().score
+            // Today's spending for widget
+            let cal = Calendar.current
+            let todayStart = cal.startOfDay(for: Date())
+            let todaySpent = try repo.totalSpending(from: todayStart, to: .now)
+
+            // Budget remaining
+            let budgets = try budgetRepo.fetchBudgets(month: cal.component(.month, from: .now), year: cal.component(.year, from: .now))
+            let budgetRemaining = budgets.reduce(0.0) { $0 + $1.remaining }
+
+            // Share with widget via App Group  
+            let shared = UserDefaults(suiteName: "group.com.financelens.ai")
+            shared?.set(todaySpent, forKey: "todaySpent")
+            shared?.set(totalExpense, forKey: "monthSpent")
+            shared?.set(budgetRemaining, forKey: "budgetRemaining")
+            shared?.set(topCategories.first?.0 ?? "-", forKey: "topCategory")
+            WidgetCenter.shared.reloadAllTimelines()
+
+            // Defer heavy health score calculation
+            Task.detached { @MainActor [repo, budgetRepo] in
+                let healthEngine = FinancialHealthEngine(repository: repo, budgetRepository: budgetRepo)
+                self.healthScore = (try? healthEngine.calculateScore().score) ?? 0
+            }
         } catch {
             print("Dashboard error: \(error)")
         }

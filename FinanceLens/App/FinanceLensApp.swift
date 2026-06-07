@@ -18,7 +18,9 @@ struct FinanceLensApp: App {
                 ChatMessage.self,
                 Forecast.self,
                 AppSettings.self,
-                Lending.self
+                Lending.self,
+                SavingsGoal.self,
+                SplitExpense.self
             ])
             let config = ModelConfiguration(
                 schema: schema,
@@ -36,7 +38,7 @@ struct FinanceLensApp: App {
             AppCoordinator()
                 .environmentObject(appState)
                 .modelContainer(container)
+                .scrollDismissesKeyboard(.interactively)
         }
     }
 }
-

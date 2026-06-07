@@ -25,26 +25,18 @@ final class TransactionRepository {
         category: String? = nil,
         merchant: String? = nil,
         type: TransactionType? = nil,
+        limit: Int? = nil,
         sortBy: SortDescriptor<Transaction> = SortDescriptor(\.transactionDate, order: .reverse)
     ) throws -> [Transaction] {
-        var predicates: [Predicate<Transaction>] = []
+        var descriptor = FetchDescriptor<Transaction>(sortBy: [sortBy])
 
-        if let startDate {
-            predicates.append(#Predicate { $0.transactionDate >= startDate })
-        }
-        if let endDate {
-            predicates.append(#Predicate { $0.transactionDate <= endDate })
-        }
-        if let category {
-            predicates.append(#Predicate { $0.categoryName == category })
-        }
-        if let merchant {
-            predicates.append(#Predicate { $0.normalizedMerchant == merchant })
+        if let limit {
+            descriptor.fetchLimit = limit
         }
 
-        let descriptor = FetchDescriptor<Transaction>(sortBy: [sortBy])
         var results = try context.fetch(descriptor)
 
+        // Filter in Swift (SwiftData compound predicates are limited)
         if let startDate {
             results = results.filter { $0.transactionDate >= startDate }
         }

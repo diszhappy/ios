@@ -23,7 +23,8 @@ final class TransactionViewModel: ObservableObject {
                 from: dateRange?.lowerBound,
                 to: dateRange?.upperBound,
                 category: selectedCategory,
-                type: selectedType
+                type: selectedType,
+                limit: 100
             )
         } catch {
             print("Failed to load transactions: \(error)")
