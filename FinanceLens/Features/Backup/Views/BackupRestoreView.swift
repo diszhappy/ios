@@ -53,27 +53,41 @@ final class BackupService {
     }
 
     func exportBackup() throws -> Data {
-        let transactions = (try? context.fetch(FetchDescriptor<Transaction>())) ?? []
-        let budgets = (try? context.fetch(FetchDescriptor<Budget>())) ?? []
-        let lendings = (try? context.fetch(FetchDescriptor<Lending>())) ?? []
+        var tDescriptor = FetchDescriptor<Transaction>()
+        tDescriptor.sortBy = [SortDescriptor(\.createdAt, order: .reverse)]
+        let transactions = (try? context.fetch(tDescriptor)) ?? []
+
+        var bDescriptor = FetchDescriptor<Budget>()
+        bDescriptor.sortBy = [SortDescriptor(\.createdAt, order: .reverse)]
+        let budgets = (try? context.fetch(bDescriptor)) ?? []
+
+        var lDescriptor = FetchDescriptor<Lending>()
+        lDescriptor.sortBy = [SortDescriptor(\.createdAt, order: .reverse)]
+        let lendings = (try? context.fetch(lDescriptor)) ?? []
+
+        let transactionDTOs = transactions.map { t in
+            TransactionDTO(amount: t.amount, merchant: t.merchant,
+                normalizedMerchant: t.normalizedMerchant, categoryName: t.categoryName,
+                transactionDate: t.transactionDate, transactionType: t.transactionType.rawValue,
+                paymentMethod: t.paymentMethod.rawValue, notes: t.notes,
+                isRecurring: t.isRecurring, source: t.source.rawValue)
+        }
+
+        let budgetDTOs = budgets.map { b in
+            BudgetDTO(categoryName: b.categoryName, amount: b.amount, spent: b.spent, month: b.month, year: b.year)
+        }
+
+        let lendingDTOs = lendings.map { l in
+            LendingDTO(personName: l.personName, amount: l.amount, remainingAmount: l.remainingAmount,
+                type: l.type.rawValue, reason: l.reason, date: l.date, dueDate: l.dueDate, isSettled: l.isSettled)
+        }
 
         let backup = BackupData(
             version: 1,
             exportDate: .now,
-            transactions: transactions.map {
-                TransactionDTO(amount: $0.amount, merchant: $0.merchant,
-                    normalizedMerchant: $0.normalizedMerchant, categoryName: $0.categoryName,
-                    transactionDate: $0.transactionDate, transactionType: $0.transactionType.rawValue,
-                    paymentMethod: $0.paymentMethod.rawValue, notes: $0.notes,
-                    isRecurring: $0.isRecurring, source: $0.source.rawValue)
-            },
-            budgets: budgets.map {
-                BudgetDTO(categoryName: $0.categoryName, amount: $0.amount, spent: $0.spent, month: $0.month, year: $0.year)
-            },
-            lendings: lendings.map {
-                LendingDTO(personName: $0.personName, amount: $0.amount, remainingAmount: $0.remainingAmount,
-                    type: $0.type.rawValue, reason: $0.reason, date: $0.date, dueDate: $0.dueDate, isSettled: $0.isSettled)
-            }
+            transactions: transactionDTOs,
+            budgets: budgetDTOs,
+            lendings: lendingDTOs
         )
 
         let encoder = JSONEncoder()
@@ -130,16 +144,27 @@ struct BackupRestoreView: View {
     @State private var exportURL: URL?
     @State private var message: String?
 
+    @State private var isExporting = false
+    @State private var isImporting = false
+
     var body: some View {
         List {
             Section("Export") {
                 Button("Export Backup") { exportData() }
+                    .disabled(isExporting || isImporting)
+                if isExporting {
+                    HStack { ProgressView(); Text("Exporting...").font(.caption) }
+                }
                 Text("Saves all transactions, budgets, and lendings as JSON")
                     .font(.caption).foregroundStyle(.secondary)
             }
 
             Section("Restore") {
                 Button("Import Backup") { showImportPicker = true }
+                    .disabled(isExporting || isImporting)
+                if isImporting {
+                    HStack { ProgressView(); Text("Restoring...").font(.caption) }
+                }
                 Text("Restores data from a previously exported backup file")
                     .font(.caption).foregroundStyle(.secondary)
             }
@@ -150,7 +175,9 @@ struct BackupRestoreView: View {
         }
         .navigationTitle("Backup & Restore")
         .sheet(isPresented: $showExportShare) {
-            if let url = exportURL { ShareSheet(items: [url]) }
+            if let url = exportURL {
+                ActivityView(activityItems: [url])
+            }
         }
         .fileImporter(isPresented: $showImportPicker, allowedContentTypes: [.json]) { result in
             if case .success(let url) = result { importData(url: url) }
@@ -158,23 +185,49 @@ struct BackupRestoreView: View {
     }
 
     private func exportData() {
-        let service = BackupService(context: context)
-        guard let data = try? service.exportBackup() else { return }
-        let url = FileManager.default.temporaryDirectory.appendingPathComponent("FinanceLens_Backup_\(Date.now.formatted(.dateTime.year().month().day())).json")
-        try? data.write(to: url)
-        exportURL = url
-        showExportShare = true
+        isExporting = true
+        Task {
+            let service = BackupService(context: context)
+            do {
+                let data = try service.exportBackup()
+                let formatter = DateFormatter()
+                formatter.dateFormat = "yyyy-MM-dd_HHmm"
+                let filename = "FinanceLens_Backup_\(formatter.string(from: .now)).json"
+                let url = FileManager.default.temporaryDirectory.appendingPathComponent(filename)
+                try data.write(to: url)
+                exportURL = url
+                showExportShare = true
+            } catch {
+                message = "Export failed: \(error.localizedDescription)"
+            }
+            isExporting = false
+        }
     }
 
     private func importData(url: URL) {
         guard url.startAccessingSecurityScopedResource() else { return }
-        defer { url.stopAccessingSecurityScopedResource() }
-        let service = BackupService(context: context)
-        guard let data = try? Data(contentsOf: url),
-              let count = try? service.importBackup(data: data) else {
-            message = "Import failed"
-            return
+        isImporting = true
+        Task {
+            defer { url.stopAccessingSecurityScopedResource() }
+            let service = BackupService(context: context)
+            guard let data = try? Data(contentsOf: url),
+                  let count = try? service.importBackup(data: data) else {
+                message = "Import failed"
+                isImporting = false
+                return
+            }
+            message = "Restored \(count) transactions successfully"
+            isImporting = false
         }
-        message = "Restored \(count) transactions successfully"
     }
+}
+
+struct ActivityView: UIViewControllerRepresentable {
+    let activityItems: [Any]
+
+    func makeUIViewController(context: Context) -> UIActivityViewController {
+        UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
+    }
+
+    func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
 }

@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		11510D792FE22FAA00B9018F /* SecureAmount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11510D772FE22FAA00B9018F /* SecureAmount.swift */; };
+		119AD9782FD96454000BB0AD /* SecureAmount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119AD9772FD96454000BB0AD /* SecureAmount.swift */; };
 		11E64A502FD5D62E00994EC1 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11E64A4F2FD5D62E00994EC1 /* WidgetKit.framework */; };
 		11E64A522FD5D62E00994EC1 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11E64A512FD5D62E00994EC1 /* SwiftUI.framework */; };
 		11E64A612FD5D62F00994EC1 /* FinanceLensWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 11E64A4D2FD5D62E00994EC1 /* FinanceLensWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -90,7 +90,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		11510D772FE22FAA00B9018F /* SecureAmount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureAmount.swift; sourceTree = "<group>"; };
+		119AD9772FD96454000BB0AD /* SecureAmount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureAmount.swift; sourceTree = "<group>"; };
 		11E64A4D2FD5D62E00994EC1 /* FinanceLensWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = FinanceLensWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		11E64A4F2FD5D62E00994EC1 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		11E64A512FD5D62E00994EC1 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
@@ -186,14 +186,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		11510D782FE22FAA00B9018F /* Theme */ = {
-			isa = PBXGroup;
-			children = (
-				11510D772FE22FAA00B9018F /* SecureAmount.swift */,
-			);
-			path = Theme;
-			sourceTree = "<group>";
-		};
 		11E64A4E2FD5D62E00994EC1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -240,7 +232,7 @@
 		G020 /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				11510D782FE22FAA00B9018F /* Theme */,
+				119AD9772FD96454000BB0AD /* SecureAmount.swift */,
 				G021 /* Navigation */,
 				G022 /* Security */,
 			);
@@ -729,7 +721,7 @@
 				A030 /* ViewModels/BudgetViewModel.swift in Sources */,
 				A031 /* Views/BudgetView.swift in Sources */,
 				A032 /* ChatView.swift in Sources */,
-				11510D792FE22FAA00B9018F /* SecureAmount.swift in Sources */,
+				119AD9782FD96454000BB0AD /* SecureAmount.swift in Sources */,
 				A033 /* DashboardView.swift in Sources */,
 				A034 /* ImportStatementView.swift in Sources */,
 				A035 /* ReportsView.swift in Sources */,

@@ -21,9 +21,9 @@ struct MainTabView: View {
                 .tabItem { Label("Analytics", systemImage: "chart.bar.fill") }
                 .tag(Tab.analytics)
 
-            ChatView()
-                .tabItem { Label("AI Chat", systemImage: "bubble.left.and.text.bubble.right") }
-                .tag(Tab.chat)
+//            ChatView()
+//                .tabItem { Label("AI Chat", systemImage: "bubble.left.and.text.bubble.right") }
+//                .tag(Tab.chat)
 
             SettingsView()
                 .tabItem { Label("Settings", systemImage: "gearshape.fill") }

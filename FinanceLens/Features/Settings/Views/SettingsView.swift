@@ -7,6 +7,7 @@ struct SettingsView: View {
     @AppStorage("biometricEnabled") private var biometricEnabled = true
     @AppStorage("dailyNotifications") private var dailyNotifications = false
     @AppStorage("weeklyNotifications") private var weeklyNotifications = false
+    @AppStorage("secureMode") private var secureMode = false
     @State private var showSetPin = false
     @State private var newPin = ""
 
@@ -18,6 +19,14 @@ struct SettingsView: View {
                     if appLockEnabled {
                         Toggle("Biometric Unlock", isOn: $biometricEnabled)
                         Button("Set/Change PIN") { showSetPin = true }
+                    }
+                    Toggle("Secure Mode", isOn: $secureMode)
+                        .onChange(of: secureMode) { _, value in
+                            UserDefaults(suiteName: "group.com.financelens.ai")?.set(value, forKey: "secureMode")
+                        }
+                    if secureMode {
+                        Text("All amounts hidden as ****")
+                            .font(.caption).foregroundStyle(.secondary)
                     }
                 }
 

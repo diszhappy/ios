@@ -225,7 +225,7 @@ struct DashboardView: View {
             let budgets = try budgetRepo.fetchBudgets(month: cal.component(.month, from: .now), year: cal.component(.year, from: .now))
             let budgetRemaining = budgets.reduce(0.0) { $0 + $1.remaining }
 
-            // Share with widget via App Group  
+            // Share with widget via App Group
             let shared = UserDefaults(suiteName: "group.com.financelens.ai")
             shared?.set(todaySpent, forKey: "todaySpent")
             shared?.set(totalExpense, forKey: "monthSpent")
@@ -254,7 +254,7 @@ struct SummaryCard: View {
         VStack(spacing: 4) {
             Image(systemName: icon)
                 .foregroundStyle(color)
-            Text("₹\(value, specifier: "%.0f")")
+            SecureAmount(value: value)
                 .font(.subheadline.bold())
                 .minimumScaleFactor(0.7)
             Text(title)
@@ -283,3 +283,4 @@ struct CircularProgressView: View {
         }
     }
 }
+
