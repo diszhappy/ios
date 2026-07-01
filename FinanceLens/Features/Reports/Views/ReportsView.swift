@@ -1,6 +1,13 @@
 import SwiftUI
 import PDFKit
 
+// MARK: - Identifiable URL Wrapper
+
+struct IdentifiableURL: Identifiable {
+    let id = UUID()
+    let url: URL
+}
+
 // MARK: - Report Generator
 
 @MainActor
@@ -109,8 +116,7 @@ struct ReportsView: View {
     @Environment(\.modelContext) private var context
     @State private var startDate = Calendar.current.date(byAdding: .month, value: -1, to: Date())!
     @State private var endDate = Date()
-    @State private var showShareSheet = false
-    @State private var exportedURL: URL?
+    @State private var exportedURL: IdentifiableURL?
     @State private var exportFormat: ExportFormat = .pdf
 
     enum ExportFormat: String, CaseIterable {
@@ -119,31 +125,27 @@ struct ReportsView: View {
     }
 
     var body: some View {
-        NavigationStack {
-            Form {
-                Section("Period") {
-                    DatePicker("From", selection: $startDate, displayedComponents: .date)
-                    DatePicker("To", selection: $endDate, displayedComponents: .date)
-                }
-
-                Section("Format") {
-                    Picker("Export Format", selection: $exportFormat) {
-                        ForEach(ExportFormat.allCases, id: \.self) { Text($0.rawValue) }
-                    }
-                    .pickerStyle(.segmented)
-                }
-
-                Section {
-                    Button("Generate Report") { generateReport() }
-                        .frame(maxWidth: .infinity)
-                }
+        Form {
+            Section("Period") {
+                DatePicker("From", selection: $startDate, displayedComponents: .date)
+                DatePicker("To", selection: $endDate, displayedComponents: .date)
             }
-            .navigationTitle("Reports")
-            .sheet(isPresented: $showShareSheet) {
-                if let url = exportedURL {
-                    ShareSheet(items: [url])
+
+            Section("Format") {
+                Picker("Export Format", selection: $exportFormat) {
+                    ForEach(ExportFormat.allCases, id: \.self) { Text($0.rawValue) }
                 }
+                .pickerStyle(.segmented)
             }
+
+            Section {
+                Button("Generate Report") { generateReport() }
+                    .frame(maxWidth: .infinity)
+            }
+        }
+        .navigationTitle("Reports")
+        .sheet(item: $exportedURL) { item in
+            ShareSheet(items: [item.url])
         }
     }
 
@@ -167,8 +169,7 @@ struct ReportsView: View {
 
             let url = FileManager.default.temporaryDirectory.appendingPathComponent(filename)
             try data.write(to: url)
-            exportedURL = url
-            showShareSheet = true
+            exportedURL = IdentifiableURL(url: url)
         } catch {
             print("Report generation failed: \(error)")
         }

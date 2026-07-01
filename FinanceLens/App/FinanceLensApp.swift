@@ -1,12 +1,22 @@
 import SwiftUI
 import SwiftData
+import UserNotifications
+
+class NotificationDelegate: NSObject, UNUserNotificationCenterDelegate {
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification) async -> UNNotificationPresentationOptions {
+        [.banner, .sound]
+    }
+}
 
 @main
 struct FinanceLensApp: App {
     @StateObject private var appState = AppState()
     private let container: ModelContainer
+    private let notificationDelegate = NotificationDelegate()
 
     init() {
+        UNUserNotificationCenter.current().delegate = notificationDelegate
+
         do {
             let schema = Schema([
                 Transaction.self,
